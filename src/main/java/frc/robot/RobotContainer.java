@@ -17,15 +17,24 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class RobotContainer {
-  private final MotorControllerGroup m_motorGroupL = new MotorControllerGroup(new WPI_VictorSPX(3), new WPI_VictorSPX(4));
-  private final MotorControllerGroup m_motorGroupR = new MotorControllerGroup(new WPI_VictorSPX(1), new WPI_VictorSPX(2));
+  private final CommandXboxController m_driverController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
   private final DriveSubsystem m_driveSubsystem = new DriveSubsystem(
-    new DriveConfig(m_motorGroupL, false, 0.6, 0.4),
-    new DriveConfig(m_motorGroupR, true, 0.6, 0.4)
+    new DriveConfig(
+      new MotorControllerGroup(
+        new WPI_VictorSPX(3),
+        new WPI_VictorSPX(4)
+      ),
+      false, 0.6, 0.4
+    ),
+    new DriveConfig(
+      new MotorControllerGroup(
+        new WPI_VictorSPX(1),
+        new WPI_VictorSPX(2)
+      ),
+      true, 0.6, 0.4
+    )
   );
-
-  private final CommandXboxController m_driverController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
   private final DriveCommand m_driveCommand = new DriveCommand(
     m_driveSubsystem,
