@@ -9,7 +9,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /**
- * This subsystem takes power and damping inputs from the controller and drives the drive train accordingly.
+ * This command takes inputs from the controller and drives the drive subsystem accordingly.
  */
 public class DriveCommand extends Command {
   /**

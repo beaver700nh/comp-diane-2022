@@ -2,6 +2,9 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+/**
+ * This subsystem controls the robot's drive motors.
+ */
 public class DriveSubsystem extends SubsystemBase {
   private final DriveConfig m_configL, m_configR;
 
