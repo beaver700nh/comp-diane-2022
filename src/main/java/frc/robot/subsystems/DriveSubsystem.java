@@ -28,7 +28,7 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void forceTo(double x, double r) {
     ((MotorController) m_configL.getController()).set(x - r);
-    ((MotorController) m_configL.getController()).set(x + r);
+    ((MotorController) m_configR.getController()).set(x + r);
   }
 
   /**
