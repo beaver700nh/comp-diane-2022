@@ -4,18 +4,17 @@ import java.util.function.Supplier;
 
 import frc.robot.Constants.*;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.DriveController;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
 /**
  * This command takes inputs from the controller and drives the drive subsystem accordingly.
  */
-public class DriveCommand<Controller extends DriveController> extends Command {
+public class DriveCommand extends Command {
   /**
    * The drive subsystem to control.
    */
-  private final DriveSubsystem<Controller> m_drive;
+  private final DriveSubsystem m_drive;
 
   /**
    * The inputs to the drive subsystem power.
@@ -37,7 +36,7 @@ public class DriveCommand<Controller extends DriveController> extends Command {
    * @param inputQ The steer damping.
    */
   public DriveCommand(
-    DriveSubsystem<Controller> drive,
+    DriveSubsystem drive,
     Supplier<Double> inputX, Supplier<Double> inputP,
     Supplier<Double> inputR, Supplier<Double> inputQ
   ) {
@@ -58,7 +57,7 @@ public class DriveCommand<Controller extends DriveController> extends Command {
    * @param inputR The steer input.
    */
   public DriveCommand(
-    DriveSubsystem<Controller> drive,
+    DriveSubsystem drive,
     Supplier<Double> inputX, Supplier<Double> inputR
   ) {
     this(

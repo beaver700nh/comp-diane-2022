@@ -7,14 +7,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 /**
  * This subsystem controls the robot's drive motors.
  */
-public class DriveSubsystem<Controller extends DriveController> extends SubsystemBase {
-  private final DriveConfig<Controller> m_configL, m_configR;
+public class DriveSubsystem extends SubsystemBase {
+  private final DriveConfig m_configL, m_configR;
 
   /**
    * @param configL The configuration of the left drive motor(s).
    * @param configR The configuration of the right drive motor(s).
    */
-  public DriveSubsystem(DriveConfig<Controller> configL, DriveConfig<Controller> configR) {
+  public DriveSubsystem(DriveConfig configL, DriveConfig configR) {
     m_configL = configL;
     m_configR = configR;
     forceTo(0, 0);

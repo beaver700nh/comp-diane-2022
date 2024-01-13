@@ -38,7 +38,7 @@ public class RobotContainer {
   /**
    * The subsystem used to make the robot move around.
    */
-  private final DriveSubsystem<WPI_TalonSRX> m_driveSubsystem = new DriveSubsystem<WPI_TalonSRX>(
+  private final DriveSubsystem m_driveSubsystem = new DriveSubsystem(
     /* Left */
     new DriveConfig(
       DriveConstants.kInvertLeft,
@@ -58,7 +58,7 @@ public class RobotContainer {
   /**
    * The command used by DriveSubsystem to translate HID input into movement.
    */
-  private final DriveCommand<WPI_TalonSRX> m_driveCommand = new DriveCommand<WPI_TalonSRX>(
+  private final DriveCommand m_driveCommand = new DriveCommand(
     m_driveSubsystem,
     /* Left stick for power (up/down), deviate horizontally for damping */
     m_driverController::getLeftY,
