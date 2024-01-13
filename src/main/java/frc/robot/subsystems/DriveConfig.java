@@ -1,7 +1,16 @@
 package frc.robot.subsystems;
 
+<<<<<<< HEAD
 public class DriveConfig<Controller extends DriveController> {
   public final Controller m_controller;
+=======
+import edu.wpi.first.wpilibj.motorcontrol.MotorController;
+
+import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
+
+public class DriveConfig {
+  public final BaseMotorController m_controller;
+>>>>>>> tmp
   public final boolean m_invert;
   public final double m_accelUp;
   public final double m_accelDown;
@@ -20,7 +29,11 @@ public class DriveConfig<Controller extends DriveController> {
     }
   }
 
+<<<<<<< HEAD
   public DriveConfig(boolean invert, double accel, Controller... controllers) {
+=======
+  public DriveConfig(boolean invert, double accel, BaseMotorController... controllers) {
+>>>>>>> tmp
     this(invert, accel, accel, controllers);
   }
 
@@ -32,7 +45,7 @@ public class DriveConfig<Controller extends DriveController> {
    * @return The actual velocity of the motor.
    */
   public double accelTo(double velocity) {
-    double now = m_controller.get();
+    double now = ((MotorController) m_controller).get();
 
     double accelDir = Math.signum(velocity - now);
     double accelMag = (
@@ -50,7 +63,7 @@ public class DriveConfig<Controller extends DriveController> {
       now = Math.min(now, velocity);
     }
 
-    m_controller.set(now);
+    ((MotorController) m_controller).set(now);
     return now;
   }
 

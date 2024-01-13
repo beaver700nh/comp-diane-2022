@@ -40,14 +40,14 @@ public class RobotContainer {
    */
   private final DriveSubsystem<WPI_TalonSRX> m_driveSubsystem = new DriveSubsystem<WPI_TalonSRX>(
     /* Left */
-    new DriveConfig<WPI_TalonSRX>(
+    new DriveConfig(
       DriveConstants.kInvertLeft,
       DriveConstants.kAcceleration,
       new WPI_TalonSRX(DriveConstants.CAN.kMotorPortLeftA),
       new WPI_TalonSRX(DriveConstants.CAN.kMotorPortLeftB)
     ),
     /* Right */
-    new DriveConfig<WPI_TalonSRX>(
+    new DriveConfig(
       DriveConstants.kInvertRight,
       DriveConstants.kAcceleration,
       new WPI_TalonSRX(DriveConstants.CAN.kMotorPortRightA),
