@@ -20,7 +20,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 /*
  * TODO:
- * - fix warnings
+ * - refactor more
+ * - fix damping
  */
 
 /**
