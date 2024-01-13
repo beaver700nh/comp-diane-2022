@@ -1,24 +1,30 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.motorcontrol.MotorController;
+import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
+import com.fasterxml.jackson.databind.JsonSerializable.Base;
 
 public class DriveConfig {
-  public final MotorController m_controller;
+  public final BaseMotorController m_controller;
   public final boolean m_invert;
   public final double m_accelUp;
   public final double m_accelDown;
 
-  public DriveConfig(MotorController controller, boolean invert, double accelUp, double accelDown) {
-    m_controller = controller;
+  public DriveConfig(boolean invert, double accelUp, double accelDown, BaseMotorController... controllers) {
     m_invert = invert;
     m_accelUp = accelUp;
     m_accelDown = accelDown;
 
+    m_controller = controllers[0];
     m_controller.setInverted(m_invert);
+  
+    for (int i = 1; i < controllers.length; i++) {
+      controllers[i].setInverted(m_invert);
+      controllers[i].follow(m_controller);
+    }
   }
 
-  public DriveConfig(MotorController controller, boolean invert, double accel) {
-    this(controller, invert, accel, accel);
+  public DriveConfig(BaseMotorController controller, boolean invert, double accel) {
+    this(invert, accel, accel, controller);
   }
 
   /**
@@ -51,7 +57,7 @@ public class DriveConfig {
     return now;
   }
 
-  public final MotorController getController() {
+  public final BaseMotorController getController() {
     return m_controller;
   }
 
