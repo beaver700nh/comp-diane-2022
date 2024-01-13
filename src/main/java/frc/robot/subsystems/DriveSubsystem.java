@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.motorcontrol.MotorController;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /**
@@ -25,8 +27,8 @@ public class DriveSubsystem extends SubsystemBase {
    * @param r The requested turning rate.
    */
   public void forceTo(double x, double r) {
-    m_configL.getController().set(x - r);
-    m_configL.getController().set(x + r);
+    ((MotorController) m_configL.getController()).set(x - r);
+    ((MotorController) m_configL.getController()).set(x + r);
   }
 
   /**

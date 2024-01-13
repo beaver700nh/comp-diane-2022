@@ -14,7 +14,6 @@ import frc.robot.subsystems.PneumaticsSubsystem;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -42,21 +41,17 @@ public class RobotContainer {
   private final DriveSubsystem m_driveSubsystem = new DriveSubsystem(
     /* Left */
     new DriveConfig(
-      new MotorControllerGroup(
-        new WPI_TalonSRX(DriveConstants.CAN.kMotorPortLeftA),
-        new WPI_TalonSRX(DriveConstants.CAN.kMotorPortLeftB)
-      ),
       DriveConstants.kInvertLeft,
-      DriveConstants.kAcceleration
+      DriveConstants.kAcceleration,
+      new WPI_TalonSRX(DriveConstants.CAN.kMotorPortLeftA),
+      new WPI_TalonSRX(DriveConstants.CAN.kMotorPortLeftB)
     ),
     /* Right */
     new DriveConfig(
-      new MotorControllerGroup(
-        new WPI_TalonSRX(DriveConstants.CAN.kMotorPortRightA),
-        new WPI_TalonSRX(DriveConstants.CAN.kMotorPortRightB)
-      ),
       DriveConstants.kInvertRight,
-      DriveConstants.kAcceleration
+      DriveConstants.kAcceleration,
+      new WPI_TalonSRX(DriveConstants.CAN.kMotorPortRightA),
+      new WPI_TalonSRX(DriveConstants.CAN.kMotorPortRightB)
     )
   );
 
