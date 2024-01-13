@@ -2,20 +2,20 @@ package frc.robot.commands;
 
 import java.util.function.Supplier;
 
-import frc.robot.Constants;
 import frc.robot.Constants.*;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.DriveController;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
 /**
  * This command takes inputs from the controller and drives the drive subsystem accordingly.
  */
-public class DriveCommand extends Command {
+public class DriveCommand<Controller extends DriveController> extends Command {
   /**
    * The drive subsystem to control.
    */
-  private final DriveSubsystem m_drive;
+  private final DriveSubsystem<Controller> m_drive;
 
   /**
    * The inputs to the drive subsystem power.
@@ -37,7 +37,7 @@ public class DriveCommand extends Command {
    * @param inputQ The steer damping.
    */
   public DriveCommand(
-    DriveSubsystem drive,
+    DriveSubsystem<Controller> drive,
     Supplier<Double> inputX, Supplier<Double> inputP,
     Supplier<Double> inputR, Supplier<Double> inputQ
   ) {
@@ -58,7 +58,7 @@ public class DriveCommand extends Command {
    * @param inputR The steer input.
    */
   public DriveCommand(
-    DriveSubsystem drive,
+    DriveSubsystem<Controller> drive,
     Supplier<Double> inputX, Supplier<Double> inputR
   ) {
     this(
@@ -90,8 +90,8 @@ public class DriveCommand extends Command {
    * @return The damped power value.
    */
   private double dampedX() {
-    final double damping = (1 - Constants.DriveConstants.kMinPower) * (1 - m_inputP.get());
-    return m_inputX.get() * damping + Constants.DriveConstants.kMinPower;
+    final double damping = (1 - DriveConstants.kMinPower) * (1 - m_inputP.get());
+    return m_inputX.get() * damping + DriveConstants.kMinPower;
   }
 
   /**
@@ -100,8 +100,8 @@ public class DriveCommand extends Command {
    * @return The damped steer value.
    */
   private double dampedR() {
-    final double damping = (1 - Constants.DriveConstants.kMinSteer) * (1 - m_inputQ.get());
-    return m_inputR.get() * damping + Constants.DriveConstants.kMinSteer;
+    final double damping = (1 - DriveConstants.kMinSteer) * (1 - m_inputQ.get());
+    return m_inputR.get() * damping + DriveConstants.kMinSteer;
   }
 
   /**

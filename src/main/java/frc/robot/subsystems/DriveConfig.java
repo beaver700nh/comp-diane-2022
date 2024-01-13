@@ -1,15 +1,12 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
-import com.fasterxml.jackson.databind.JsonSerializable.Base;
-
-public class DriveConfig {
-  public final BaseMotorController m_controller;
+public class DriveConfig<Controller extends DriveController> {
+  public final Controller m_controller;
   public final boolean m_invert;
   public final double m_accelUp;
   public final double m_accelDown;
 
-  public DriveConfig(boolean invert, double accelUp, double accelDown, BaseMotorController... controllers) {
+  public DriveConfig(boolean invert, double accelUp, double accelDown, Controller... controllers) {
     m_invert = invert;
     m_accelUp = accelUp;
     m_accelDown = accelDown;
@@ -23,8 +20,8 @@ public class DriveConfig {
     }
   }
 
-  public DriveConfig(BaseMotorController controller, boolean invert, double accel) {
-    this(invert, accel, accel, controller);
+  public DriveConfig(boolean invert, double accel, Controller... controllers) {
+    this(invert, accel, accel, controllers);
   }
 
   /**
@@ -57,7 +54,7 @@ public class DriveConfig {
     return now;
   }
 
-  public final BaseMotorController getController() {
+  public final Controller getController() {
     return m_controller;
   }
 

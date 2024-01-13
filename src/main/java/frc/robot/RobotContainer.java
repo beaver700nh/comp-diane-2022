@@ -14,7 +14,6 @@ import frc.robot.subsystems.PneumaticsSubsystem;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -39,31 +38,27 @@ public class RobotContainer {
   /**
    * The subsystem used to make the robot move around.
    */
-  private final DriveSubsystem m_driveSubsystem = new DriveSubsystem(
+  private final DriveSubsystem<WPI_TalonSRX> m_driveSubsystem = new DriveSubsystem<WPI_TalonSRX>(
     /* Left */
-    new DriveConfig(
-      new MotorControllerGroup(
-        new WPI_TalonSRX(DriveConstants.CAN.kMotorPortLeftA),
-        new WPI_TalonSRX(DriveConstants.CAN.kMotorPortLeftB)
-      ),
+    new DriveConfig<WPI_TalonSRX>(
       DriveConstants.kInvertLeft,
-      DriveConstants.kAcceleration
+      DriveConstants.kAcceleration,
+      new WPI_TalonSRX(DriveConstants.CAN.kMotorPortLeftA),
+      new WPI_TalonSRX(DriveConstants.CAN.kMotorPortLeftB)
     ),
     /* Right */
-    new DriveConfig(
-      new MotorControllerGroup(
-        new WPI_TalonSRX(DriveConstants.CAN.kMotorPortRightA),
-        new WPI_TalonSRX(DriveConstants.CAN.kMotorPortRightB)
-      ),
+    new DriveConfig<WPI_TalonSRX>(
       DriveConstants.kInvertRight,
-      DriveConstants.kAcceleration
+      DriveConstants.kAcceleration,
+      new WPI_TalonSRX(DriveConstants.CAN.kMotorPortRightA),
+      new WPI_TalonSRX(DriveConstants.CAN.kMotorPortRightB)
     )
   );
 
   /**
    * The command used by DriveSubsystem to translate HID input into movement.
    */
-  private final DriveCommand m_driveCommand = new DriveCommand(
+  private final DriveCommand<WPI_TalonSRX> m_driveCommand = new DriveCommand<WPI_TalonSRX>(
     m_driveSubsystem,
     /* Left stick for power (up/down), deviate horizontally for damping */
     m_driverController::getLeftY,
