@@ -1,16 +1,12 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.motorcontrol.MotorController;
-
-import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
-
 public class DriveConfig {
-  public final BaseMotorController m_controller;
+  public final DriveController m_controller;
   public final boolean m_invert;
   public final double m_accelUp;
   public final double m_accelDown;
 
-  public DriveConfig(boolean invert, double accelUp, double accelDown, BaseMotorController... controllers) {
+  public DriveConfig(boolean invert, double accelUp, double accelDown, DriveController... controllers) {
     m_invert = invert;
     m_accelUp = accelUp;
     m_accelDown = accelDown;
@@ -24,7 +20,7 @@ public class DriveConfig {
     }
   }
 
-  public DriveConfig(boolean invert, double accel, BaseMotorController... controllers) {
+  public DriveConfig(boolean invert, double accel, DriveController... controllers) {
     this(invert, accel, accel, controllers);
   }
 
@@ -36,7 +32,7 @@ public class DriveConfig {
    * @return The actual velocity of the motor.
    */
   public double accelTo(double velocity) {
-    double now = ((MotorController) m_controller).get();
+    double now = m_controller.get();
 
     double accelDir = Math.signum(velocity - now);
     double accelMag = (
@@ -54,11 +50,11 @@ public class DriveConfig {
       now = Math.min(now, velocity);
     }
 
-    ((MotorController) m_controller).set(now);
+    m_controller.set(now);
     return now;
   }
 
-  public final BaseMotorController getController() {
+  public final DriveController getController() {
     return m_controller;
   }
 

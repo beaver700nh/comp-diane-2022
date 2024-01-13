@@ -8,6 +8,7 @@ import frc.robot.Constants.*;
 import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.DriveConfig;
+import frc.robot.subsystems.DriveController;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LaunchSubsystem;
 import frc.robot.subsystems.PneumaticsSubsystem;
@@ -21,7 +22,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 /*
  * TODO:
  * - refactor more
- * - fix damping
+ * - add rest of subsystems like climbing
  */
 
 /**
@@ -44,15 +45,15 @@ public class RobotContainer {
     new DriveConfig(
       DriveConstants.kInvertLeft,
       DriveConstants.kAcceleration,
-      new WPI_TalonSRX(DriveConstants.CAN.kMotorPortLeftA),
-      new WPI_TalonSRX(DriveConstants.CAN.kMotorPortLeftB)
+      (DriveController) new WPI_TalonSRX(DriveConstants.CAN.kMotorPortLeftA),
+      (DriveController) new WPI_TalonSRX(DriveConstants.CAN.kMotorPortLeftB)
     ),
     /* Right */
     new DriveConfig(
       DriveConstants.kInvertRight,
       DriveConstants.kAcceleration,
-      new WPI_TalonSRX(DriveConstants.CAN.kMotorPortRightA),
-      new WPI_TalonSRX(DriveConstants.CAN.kMotorPortRightB)
+      (DriveController) new WPI_TalonSRX(DriveConstants.CAN.kMotorPortRightA),
+      (DriveController) new WPI_TalonSRX(DriveConstants.CAN.kMotorPortRightB)
     )
   );
 
@@ -61,12 +62,12 @@ public class RobotContainer {
    */
   private final DriveCommand m_driveCommand = new DriveCommand(
     m_driveSubsystem,
-    /* Left stick for power (up/down), deviate horizontally for damping */
+    /* Power */
     m_driverController::getLeftY,
-    m_driverController::getLeftX,
-    /* Right stick for steering (left/right), deviate vertically for damping */
+    m_driverController::getLeftTriggerAxis,
+    /* Steer */
     m_driverController::getRightX,
-    m_driverController::getRightY
+    m_driverController::getRightTriggerAxis
   );
 
   /**
