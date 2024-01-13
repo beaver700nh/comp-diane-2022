@@ -2,6 +2,8 @@ package frc.robot.commands;
 
 import java.util.function.Supplier;
 
+import frc.robot.Constants;
+import frc.robot.Constants.*;
 import frc.robot.subsystems.DriveSubsystem;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -88,8 +90,8 @@ public class DriveCommand extends Command {
    * @return The damped power value.
    */
   private double dampedX() {
-    final double damping = 1 - m_inputP.get();
-    return m_inputX.get() * MIN_X * (1 - m_inputP.get()) + MIN_X);
+    final double damping = (1 - Constants.DriveConstants.kMinPower) * (1 - m_inputP.get());
+    return m_inputX.get() * damping + Constants.DriveConstants.kMinPower;
   }
 
   /**
@@ -98,7 +100,8 @@ public class DriveCommand extends Command {
    * @return The damped steer value.
    */
   private double dampedR() {
-    return m_inputR.get() * ((1 - MIN_R) * m_inputQ.get() + MIN_R);
+    final double damping = (1 - Constants.DriveConstants.kMinSteer) * (1 - m_inputQ.get());
+    return m_inputR.get() * damping + Constants.DriveConstants.kMinSteer;
   }
 
   /**

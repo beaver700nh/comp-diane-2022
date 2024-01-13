@@ -21,9 +21,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 /*
  * TODO:
- * - Make damper reverse
  * - fix warnings
- * - Refactor/clean from DriveCommand
  */
 
 /**
