@@ -99,7 +99,6 @@ public class RobotContainer {
   private final PneumaticsSubsystem m_pneumaticsSubsystem = new PneumaticsSubsystem();
 
   /**
-   * Constructor.
    * Configure default commands and button bindings.
    */
   public RobotContainer() {

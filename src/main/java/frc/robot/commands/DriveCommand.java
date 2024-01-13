@@ -25,8 +25,15 @@ public class DriveCommand extends Command {
    */
   private final Supplier<Double> m_inputR, m_inputQ;
 
-  private final double MIN_X = 0.4, MIN_R = 0.2;
-
+  /**
+   * Connects to a drive subsystem with drive and damping inputs.
+   *
+   * @param drive The drive subsystem to control.
+   * @param inputX The power input.
+   * @param inputP The power damping.
+   * @param inputR The steer input.
+   * @param inputQ The steer damping.
+   */
   public DriveCommand(
     DriveSubsystem drive,
     Supplier<Double> inputX, Supplier<Double> inputP,
@@ -41,6 +48,13 @@ public class DriveCommand extends Command {
     addRequirements(drive);
   }
 
+  /**
+   * Connects to a drive subsystem with drive inputs and no damping.
+   *
+   * @param drive The drive subsystem to control.
+   * @param inputX The power input.
+   * @param inputR The steer input.
+   */
   public DriveCommand(
     DriveSubsystem drive,
     Supplier<Double> inputX, Supplier<Double> inputR
@@ -52,30 +66,53 @@ public class DriveCommand extends Command {
     );
   }
 
+  /**
+   * Halts motors when the command is started.
+   */
   @Override
   public void initialize() {
     m_drive.forceTo(0, 0);
   }
 
+  /**
+   * Drives the drive subsystem according to the inputs, every tick.
+   */
   @Override
   public void execute() {
     m_drive.accelTo(dampedX(), dampedR());
   }
 
+  /**
+   * Applies damping to the power input.
+   *
+   * @return The damped power value.
+   */
   private double dampedX() {
-    return m_inputX.get() * ((1 - MIN_X) * m_inputP.get() + MIN_X);
+    final double damping = 1 - m_inputP.get();
+    return m_inputX.get() * MIN_X * (1 - m_inputP.get()) + MIN_X);
   }
 
+  /**
+   * Applies damping to the steer input.
+   *
+   * @return The damped steer value.
+   */
   private double dampedR() {
     return m_inputR.get() * ((1 - MIN_R) * m_inputQ.get() + MIN_R);
   }
 
+  /**
+   * Halts the motor when the command is stopped.
+   */
   @Override
   @SuppressWarnings("PMD.UnusedFormalParameter")
   public void end(boolean interrupted) {
     m_drive.forceTo(0, 0);
   }
 
+  /**
+   * Reports that the command is never finished because the robot should always be drivable when enabled.
+   */
   @Override
   public boolean isFinished() {
     return false;

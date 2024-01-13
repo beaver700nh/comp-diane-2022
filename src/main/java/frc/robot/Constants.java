@@ -11,6 +11,8 @@ public final class Constants {
     public static final boolean kInvertLeft = true;
     public static final boolean kInvertRight = false;
     public static final double kAcceleration = 0.6;
+    public static final double kMinPower = 0.4;
+    public static final double kMinSteer = 0.2;
 
     public static class CAN {
       public static final int kMotorPortLeftA = 3;
