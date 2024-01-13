@@ -18,7 +18,7 @@ public class DriveConfig {
     m_controller = controllers[0];
     m_controller.setInverted(m_invert);
   
-    for (int i = 1; i < controllers.length; i++) {
+    for (int i = 1; i < controllers.length; ++i) {
       controllers[i].setInverted(m_invert);
       controllers[i].follow(m_controller);
     }
