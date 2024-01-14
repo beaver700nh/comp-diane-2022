@@ -1,32 +1,67 @@
 package frc.robot.subsystems;
 
+/**
+ * Handles a set of drive motors with their configuration.
+ * Includes support for linear velocity ramping.
+ */
 public class DriveConfig {
-  public final DriveController m_controller;
+  /**
+   * The direction in which the motors should spin.
+   */
   public final boolean m_invert;
+
+  /**
+   * The rate at which the motor should get faster. 
+   */
   public final double m_accelUp;
+
+  /**
+   * The rate at which the motor should get slower or change direction.
+   */
   public final double m_accelDown;
 
+  /**
+   * The master motor controller which is followed by all the others.
+   */
+  public final DriveController m_controller;
+
+  /**
+   * Initialize the configuration for the drive motors.
+   *
+   * @param invert The direction in which the motors should spin.
+   * @param accelUp The rate at which the motor should get faster. 
+   * @param accelDown The rate at which the motor should get slower or change direction.
+   * @param controllers The motor controllers to be driven.
+   */
   public DriveConfig(boolean invert, double accelUp, double accelDown, DriveController... controllers) {
     m_invert = invert;
     m_accelUp = accelUp;
     m_accelDown = accelDown;
-
     m_controller = controllers[0];
-    m_controller.setInverted(m_invert);
-  
-    for (int i = 1; i < controllers.length; ++i) {
-      controllers[i].setInverted(m_invert);
-      controllers[i].follow(m_controller);
+
+    for (DriveController controller : controllers) {
+      controller.setInverted(m_invert);
+
+      if (controller != m_controller) {
+        controller.follow(m_controller);
+      }
     }
   }
 
+  /**
+   * Initialize the configuration for the drive motors.
+   * Assume that the acceleration rate is the same for both directions.
+   *
+   * @param invert The direction in which the motors should spin.
+   * @param accel The rate at which the motor should change speed.
+   * @param controllers The motor controllers to be driven.
+   */
   public DriveConfig(boolean invert, double accel, DriveController... controllers) {
     this(invert, accel, accel, controllers);
   }
 
   /**
-   * Accelerates the motor towards the given velocity.
-   * Returns the actual velocity of the motor.
+   * Accelerate the motor towards the given velocity.
    *
    * @param velocity The requested velocity of the motor.
    * @return The actual velocity of the motor.

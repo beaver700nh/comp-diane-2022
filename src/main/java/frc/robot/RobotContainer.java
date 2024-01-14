@@ -4,6 +4,12 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 import frc.robot.Constants.*;
 import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
@@ -13,20 +19,14 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LaunchSubsystem;
 import frc.robot.subsystems.PneumaticsSubsystem;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-
 /*
  * TODO:
- * - refactor more
- * - add rest of subsystems like climbing
+ * - add climbing
+ * - add intake feeder
  */
 
 /**
- * The class containing the majority of the robot's control code.
+ * Handles the majority of the high-level robot control.
  * This is where commands, subsystems, controllers, and button bindings are located.
  */
 public class RobotContainer {
@@ -45,15 +45,15 @@ public class RobotContainer {
     new DriveConfig(
       DriveConstants.kInvertLeft,
       DriveConstants.kAcceleration,
-      (DriveController) new WPI_TalonSRX(DriveConstants.CAN.kMotorPortLeftA),
-      (DriveController) new WPI_TalonSRX(DriveConstants.CAN.kMotorPortLeftB)
+      (DriveController) new WPI_TalonSRX(DriveConstants.CAN.kMotorLeftA),
+      (DriveController) new WPI_TalonSRX(DriveConstants.CAN.kMotorLeftB)
     ),
     /* Right */
     new DriveConfig(
       DriveConstants.kInvertRight,
       DriveConstants.kAcceleration,
-      (DriveController) new WPI_TalonSRX(DriveConstants.CAN.kMotorPortRightA),
-      (DriveController) new WPI_TalonSRX(DriveConstants.CAN.kMotorPortRightB)
+      (DriveController) new WPI_TalonSRX(DriveConstants.CAN.kMotorRightA),
+      (DriveController) new WPI_TalonSRX(DriveConstants.CAN.kMotorRightB)
     )
   );
 
@@ -74,7 +74,7 @@ public class RobotContainer {
    * The subsystem used to pick up game pieces off the ground.
    */
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem(
-    Constants.IntakeConstants.PWM.kMotorPort,
+    Constants.IntakeConstants.PWM.kMotor,
     Constants.IntakeConstants.kIntakeSpeed,
     Constants.IntakeConstants.kIsInverted
   );
@@ -83,7 +83,7 @@ public class RobotContainer {
    * The subsystem used to score game pieces in the baskets.
    */
   private final LaunchSubsystem m_launchSubsystem = new LaunchSubsystem(
-    Constants.LaunchConstants.PWM.kFlywheelPort,
+    Constants.LaunchConstants.PWM.kFlywheel,
     Constants.LaunchConstants.kFlywheelSpeed,
     Constants.LaunchConstants.kFlywheelInverted
   );
@@ -103,7 +103,7 @@ public class RobotContainer {
   }
 
   /**
-   * Bind commands to HID events.
+   * Bind commands to controller events.
    */
   private void configureBindings() {
     m_driverController.a()
@@ -132,7 +132,7 @@ public class RobotContainer {
   }
 
   /**
-   * Factory for dummy auto command, which just prints a message, to satisfy the API.
+   * Generate dummy auto command, which just prints a message to satisfy the API.
    * 
    * @return The auto command.
    */

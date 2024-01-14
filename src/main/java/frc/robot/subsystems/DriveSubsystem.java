@@ -1,18 +1,21 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.motorcontrol.MotorController;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /**
- * This subsystem controls the robot's drive motors.
+ * Handles the robot's drive train.
  */
 public class DriveSubsystem extends SubsystemBase {
+  /**
+   * The subcontrollers for the left and right drive trains.
+   */
   private final DriveConfig m_configL, m_configR;
 
   /**
-   * @param configL The configuration of the left drive motor(s).
-   * @param configR The configuration of the right drive motor(s).
+   * Initialize the drive trains to a stopped state.
+   *
+   * @param configL The subcontroller for the left drive train.
+   * @param configR The subcontroller for the right drive train.
    */
   public DriveSubsystem(DriveConfig configL, DriveConfig configR) {
     m_configL = configL;
@@ -21,18 +24,18 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   /**
-   * Sets the robot velocity immediately using the given values.
+   * Set the robot velocity immediately using the given values.
    *
    * @param x The requested movement rate.
    * @param r The requested turning rate.
    */
   public void forceTo(double x, double r) {
-    ((MotorController) m_configL.getController()).set(x - r);
-    ((MotorController) m_configR.getController()).set(x + r);
+    m_configL.getController().set(x - r);
+    m_configR.getController().set(x + r);
   }
 
   /**
-   * Requests the robot to drive using the given velocity values.
+   * Request the robot to drive using the given velocity values.
    *
    * @param x The requested movement rate.
    * @param r The requested turning rate.
