@@ -3,17 +3,16 @@ package frc.robot.classes;
 import frc.robot.interfaces.IDriveController;
 
 /**
- * Handles a set of drive motors with their configuration.
- * Includes support for linear velocity ramping.
+ * Handles one side of a tank drive drive train.
  */
-public class DriveConfig {
+public class TankDriveSide {
   /**
    * The direction in which the motors should spin.
    */
   public final boolean m_invert;
 
   /**
-   * The rate at which the motor should get faster. 
+   * The rate at which the motor should get faster.
    */
   public final double m_accelUp;
 
@@ -35,7 +34,7 @@ public class DriveConfig {
    * @param accelDown The rate at which the motor should get slower or change direction.
    * @param controllers The motor controllers to be driven.
    */
-  public DriveConfig(boolean invert, double accelUp, double accelDown, IDriveController... controllers) {
+  public TankDriveSide(boolean invert, double accelUp, double accelDown, IDriveController... controllers) {
     m_invert = invert;
     m_accelUp = accelUp;
     m_accelDown = accelDown;
@@ -58,7 +57,7 @@ public class DriveConfig {
    * @param accel The rate at which the motor should change speed.
    * @param controllers The motor controllers to be driven.
    */
-  public DriveConfig(boolean invert, double accel, IDriveController... controllers) {
+  public TankDriveSide(boolean invert, double accel, IDriveController... controllers) {
     this(invert, accel, accel, controllers);
   }
 

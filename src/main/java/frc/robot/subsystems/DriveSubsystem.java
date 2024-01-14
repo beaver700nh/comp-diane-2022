@@ -2,7 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import frc.robot.classes.DriveConfig;
+import frc.robot.classes.TankDriveSide;
 
 /**
  * Handles the robot's drive train.
@@ -11,7 +11,7 @@ public class DriveSubsystem extends SubsystemBase {
   /**
    * The subcontrollers for the left and right drive trains.
    */
-  private final DriveConfig m_configL, m_configR;
+  private final TankDriveSide m_configL, m_configR;
 
   /**
    * Initialize the drive trains to a stopped state.
@@ -19,7 +19,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @param configL The subcontroller for the left drive train.
    * @param configR The subcontroller for the right drive train.
    */
-  public DriveSubsystem(DriveConfig configL, DriveConfig configR) {
+  public DriveSubsystem(TankDriveSide configL, TankDriveSide configR) {
     m_configL = configL;
     m_configR = configR;
     forceTo(0, 0);

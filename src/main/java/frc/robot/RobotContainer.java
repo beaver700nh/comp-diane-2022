@@ -11,12 +11,12 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import frc.robot.Constants.*;
-import frc.robot.classes.DriveConfig;
 import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LaunchSubsystem;
 import frc.robot.subsystems.PneumaticsSubsystem;
+import frc.robot.classes.TankDriveSide;
 import frc.robot.interfaces.IDriveController;
 
 /*
@@ -42,14 +42,14 @@ public class RobotContainer {
    */
   private final DriveSubsystem m_driveSubsystem = new DriveSubsystem(
     /* Left */
-    new DriveConfig(
+    new TankDriveSide(
       DriveConstants.kInvertLeft,
       DriveConstants.kAcceleration,
       (IDriveController) new WPI_TalonSRX(DriveConstants.CAN.kMotorLeftA),
       (IDriveController) new WPI_TalonSRX(DriveConstants.CAN.kMotorLeftB)
     ),
     /* Right */
-    new DriveConfig(
+    new TankDriveSide(
       DriveConstants.kInvertRight,
       DriveConstants.kAcceleration,
       (IDriveController) new WPI_TalonSRX(DriveConstants.CAN.kMotorRightA),
