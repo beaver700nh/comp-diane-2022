@@ -8,8 +8,6 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import frc.robot.Constants.*;
-
 /**
  * Handles the robot's pneumatics system.
  */
@@ -17,28 +15,30 @@ public class PneumaticsSubsystem extends SubsystemBase {
   /**
    * The air compressor.
    */
-  private final Compressor m_compressor = new Compressor(
-    PneumaticsConstants.CAN.kPCM, PneumaticsModuleType.CTREPCM
-  );
+  private final Compressor m_compressor;
 
   /**
    * The solenoid the tilts the climbing mechanism.
    */
-  private final Solenoid m_climb = new Solenoid(
-    PneumaticsConstants.CAN.kPCM, PneumaticsModuleType.CTREPCM, 0
-  );
+  private final Solenoid m_climb;
 
   /**
    * The solenoid that opens and closes the intake.
    */
-  private final DoubleSolenoid m_intake = new DoubleSolenoid(
-    PneumaticsConstants.CAN.kPCM, PneumaticsModuleType.CTREPCM, 1, 2
-  );
+  private final DoubleSolenoid m_intake;
 
   /**
-   * Initialize the pneumatics system and enable the compressor.
+   * Initialize the pneumatics system and its components.
+   * Also enable the compressor.
+   * 
+   * @param pcmId The CAN ID of the PCM.
    */
-  public PneumaticsSubsystem() {
+  public PneumaticsSubsystem(int pcmId, PneumaticsModuleType pcmType) {
+    m_compressor = new Compressor(pcmId, pcmType);
+
+    m_climb = new Solenoid(pcmId, pcmType, 0);
+    m_intake = new DoubleSolenoid(pcmId, pcmType, 1, 2);
+
     m_compressor.enableDigital();
   }
 

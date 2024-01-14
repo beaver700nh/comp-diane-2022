@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -16,8 +17,9 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LaunchSubsystem;
 import frc.robot.subsystems.PneumaticsSubsystem;
-import frc.robot.classes.TankDriveSide;
-import frc.robot.interfaces.IDriveController;
+import frc.robot.classes.SmartMotorController;
+import frc.robot.classes.SmartMotorControllerGroup;
+import frc.robot.interfaces.ISmartMotorController;
 
 /*
  * TODO:
@@ -41,19 +43,19 @@ public class RobotContainer {
    * The subsystem used to make the robot move around.
    */
   private final DriveSubsystem m_driveSubsystem = new DriveSubsystem(
-    /* Left */
-    new TankDriveSide(
+    new SmartMotorControllerGroup(
       DriveConstants.kInvertLeft,
+      DriveConstants.kMultiplier,
       DriveConstants.kAcceleration,
-      (IDriveController) new WPI_TalonSRX(DriveConstants.CAN.kMotorLeftA),
-      (IDriveController) new WPI_TalonSRX(DriveConstants.CAN.kMotorLeftB)
+      (ISmartMotorController) new WPI_TalonSRX(DriveConstants.CAN.kMotorLeftA),
+      (ISmartMotorController) new WPI_TalonSRX(DriveConstants.CAN.kMotorLeftB)
     ),
-    /* Right */
-    new TankDriveSide(
+    new SmartMotorControllerGroup(
       DriveConstants.kInvertRight,
+      DriveConstants.kMultiplier,
       DriveConstants.kAcceleration,
-      (IDriveController) new WPI_TalonSRX(DriveConstants.CAN.kMotorRightA),
-      (IDriveController) new WPI_TalonSRX(DriveConstants.CAN.kMotorRightB)
+      (ISmartMotorController) new WPI_TalonSRX(DriveConstants.CAN.kMotorRightA),
+      (ISmartMotorController) new WPI_TalonSRX(DriveConstants.CAN.kMotorRightB)
     )
   );
 
@@ -62,10 +64,8 @@ public class RobotContainer {
    */
   private final DriveCommand m_driveCommand = new DriveCommand(
     m_driveSubsystem,
-    /* Power */
     m_driverController::getLeftY,
     m_driverController::getLeftTriggerAxis,
-    /* Steer */
     m_driverController::getRightX,
     m_driverController::getRightTriggerAxis
   );
@@ -74,24 +74,33 @@ public class RobotContainer {
    * The subsystem used to pick up game pieces off the ground.
    */
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem(
-    Constants.IntakeConstants.PWM.kMotor,
-    Constants.IntakeConstants.kIntakeSpeed,
-    Constants.IntakeConstants.kIsInverted
+    new SmartMotorController(
+      IntakeConstants.kIntakeInverted,
+      IntakeConstants.kIntakeSpeed,
+      0, 0,
+      new Spark(IntakeConstants.PWM.kIntake)
+    )
   );
 
   /**
    * The subsystem used to score game pieces in the baskets.
    */
   private final LaunchSubsystem m_launchSubsystem = new LaunchSubsystem(
-    Constants.LaunchConstants.PWM.kFlywheel,
-    Constants.LaunchConstants.kFlywheelSpeed,
-    Constants.LaunchConstants.kFlywheelInverted
+    new SmartMotorController(
+      LaunchConstants.kFlywheelInverted,
+      LaunchConstants.kFlywheelSpeed,
+      0, 0,
+      new Spark(LaunchConstants.PWM.kFlywheel)
+    )
   );
 
   /**
    * The subsystem used to control compressed-air flow.
    */
-  private final PneumaticsSubsystem m_pneumaticsSubsystem = new PneumaticsSubsystem();
+  private final PneumaticsSubsystem m_pneumaticsSubsystem = new PneumaticsSubsystem(
+    PneumaticsConstants.CAN.kPCM,
+    PneumaticsConstants.kPcmType
+  );
 
   /**
    * Configure default commands and button bindings.
@@ -112,18 +121,18 @@ public class RobotContainer {
       .onTrue(m_pneumaticsSubsystem.intakeClose());
 
     m_driverController.povUp()
-      .onTrue(m_intakeSubsystem.intake());
+      .onTrue(m_intakeSubsystem.intakeIn());
     m_driverController.povDown()
-      .onTrue(m_intakeSubsystem.outtake());
+      .onTrue(m_intakeSubsystem.intakeOut());
     m_driverController.povLeft()
-      .onTrue(m_intakeSubsystem.stop());
+      .onTrue(m_intakeSubsystem.intakeStop());
     m_driverController.povRight()
-      .onTrue(m_intakeSubsystem.stop());
+      .onTrue(m_intakeSubsystem.intakeStop());
 
     m_driverController.x()
-      .onTrue(m_launchSubsystem.enable());
+      .onTrue(m_launchSubsystem.flywheelOn());
     m_driverController.y()
-      .onTrue(m_launchSubsystem.disable());
+      .onTrue(m_launchSubsystem.flywheelOff());
 
     m_driverController.leftBumper()
       .onTrue(m_pneumaticsSubsystem.climbOpen());

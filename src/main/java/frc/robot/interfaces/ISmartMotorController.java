@@ -7,4 +7,4 @@ import com.ctre.phoenix.motorcontrol.IMotorController;
 /**
  * Only used to satisfy the type checker.
  */
-public interface IDriveController extends MotorController, IMotorController {}
+public interface ISmartMotorController extends MotorController, IMotorController {}
