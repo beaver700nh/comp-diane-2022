@@ -1,4 +1,6 @@
-package frc.robot.subsystems;
+package frc.robot.classes;
+
+import frc.robot.interfaces.IDriveController;
 
 /**
  * Handles a set of drive motors with their configuration.
@@ -23,7 +25,7 @@ public class DriveConfig {
   /**
    * The master motor controller which is followed by all the others.
    */
-  public final DriveController m_controller;
+  public final IDriveController m_controller;
 
   /**
    * Initialize the configuration for the drive motors.
@@ -33,13 +35,13 @@ public class DriveConfig {
    * @param accelDown The rate at which the motor should get slower or change direction.
    * @param controllers The motor controllers to be driven.
    */
-  public DriveConfig(boolean invert, double accelUp, double accelDown, DriveController... controllers) {
+  public DriveConfig(boolean invert, double accelUp, double accelDown, IDriveController... controllers) {
     m_invert = invert;
     m_accelUp = accelUp;
     m_accelDown = accelDown;
     m_controller = controllers[0];
 
-    for (DriveController controller : controllers) {
+    for (IDriveController controller : controllers) {
       controller.setInverted(m_invert);
 
       if (controller != m_controller) {
@@ -56,7 +58,7 @@ public class DriveConfig {
    * @param accel The rate at which the motor should change speed.
    * @param controllers The motor controllers to be driven.
    */
-  public DriveConfig(boolean invert, double accel, DriveController... controllers) {
+  public DriveConfig(boolean invert, double accel, IDriveController... controllers) {
     this(invert, accel, accel, controllers);
   }
 
@@ -89,7 +91,7 @@ public class DriveConfig {
     return now;
   }
 
-  public final DriveController getController() {
+  public final IDriveController getController() {
     return m_controller;
   }
 
