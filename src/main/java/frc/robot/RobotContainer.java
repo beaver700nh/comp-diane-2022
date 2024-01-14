@@ -63,10 +63,10 @@ public class RobotContainer {
     m_driveSubsystem,
     /* Left stick for power (up/down), deviate horizontally for damping */
     m_driverController::getLeftY,
-    m_driverController::getLeftX,
+    m_driverController::getLeftTriggerAxis,
     /* Right stick for steering (left/right), deviate vertically for damping */
     m_driverController::getRightX,
-    m_driverController::getRightY
+    m_driverController::getRightTriggerAxis
   );
 
   /**
