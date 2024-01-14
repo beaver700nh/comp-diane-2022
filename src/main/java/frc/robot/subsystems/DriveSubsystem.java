@@ -1,44 +1,49 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.motorcontrol.MotorController;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import frc.robot.classes.SmartMotorControllerGroup;
+
 /**
- * This subsystem controls the robot's drive motors.
+ * Handles the robot's drive train.
  */
 public class DriveSubsystem extends SubsystemBase {
-  private final DriveConfig m_configL, m_configR;
+  /**
+   * The subcontrollers for the left and right drive trains.
+   */
+  private final SmartMotorControllerGroup m_trainL, m_trainR;
 
   /**
-   * @param configL The configuration of the left drive motor(s).
-   * @param configR The configuration of the right drive motor(s).
+   * Initialize the drive trains to a stopped state.
+   *
+   * @param trainL The subcontroller for the left drive train.
+   * @param trainR The subcontroller for the right drive train.
    */
-  public DriveSubsystem(DriveConfig configL, DriveConfig configR) {
-    m_configL = configL;
-    m_configR = configR;
+  public DriveSubsystem(SmartMotorControllerGroup trainL, SmartMotorControllerGroup trainR) {
+    m_trainL = trainL;
+    m_trainR = trainR;
     forceTo(0, 0);
   }
 
   /**
-   * Sets the robot velocity immediately using the given values.
+   * Set the robot velocity immediately using the given values.
    *
    * @param x The requested movement rate.
    * @param r The requested turning rate.
    */
   public void forceTo(double x, double r) {
-    ((MotorController) m_configL.getController()).set(x - r);
-    ((MotorController) m_configR.getController()).set(x + r);
+    m_trainL.forceTo(x - r);
+    m_trainR.forceTo(x + r);
   }
 
   /**
-   * Requests the robot to drive using the given velocity values.
+   * Request the robot to drive using the given velocity values.
    *
    * @param x The requested movement rate.
    * @param r The requested turning rate.
    */
   public void accelTo(double x, double r) {
-    m_configL.accelTo(x - r);
-    m_configR.accelTo(x + r);
+    m_trainL.accelTo(x - r);
+    m_trainR.accelTo(x + r);
   }
 }

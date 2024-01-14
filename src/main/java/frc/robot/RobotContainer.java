@@ -4,28 +4,31 @@
 
 package frc.robot;
 
-import frc.robot.Constants.*;
-import frc.robot.commands.DriveCommand;
-import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.DriveConfig;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.LaunchSubsystem;
-import frc.robot.subsystems.PneumaticsSubsystem;
-
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
+import frc.robot.Constants.*;
+import frc.robot.commands.DriveCommand;
+import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LaunchSubsystem;
+import frc.robot.subsystems.PneumaticsSubsystem;
+import frc.robot.classes.SmartMotorController;
+import frc.robot.classes.SmartMotorControllerGroup;
+import frc.robot.interfaces.ISmartMotorController;
+
 /*
  * TODO:
- * - refactor more
- * - fix damping
+ * - add climbing
+ * - add intake feeder
  */
 
 /**
- * The class containing the majority of the robot's control code.
+ * Handles the majority of the high-level robot control.
  * This is where commands, subsystems, controllers, and button bindings are located.
  */
 public class RobotContainer {
@@ -40,19 +43,19 @@ public class RobotContainer {
    * The subsystem used to make the robot move around.
    */
   private final DriveSubsystem m_driveSubsystem = new DriveSubsystem(
-    /* Left */
-    new DriveConfig(
+    new SmartMotorControllerGroup(
       DriveConstants.kInvertLeft,
+      DriveConstants.kMultiplier,
       DriveConstants.kAcceleration,
-      new WPI_TalonSRX(DriveConstants.CAN.kMotorPortLeftA),
-      new WPI_TalonSRX(DriveConstants.CAN.kMotorPortLeftB)
+      (ISmartMotorController) new WPI_TalonSRX(DriveConstants.CAN.kMotorLeftA),
+      (ISmartMotorController) new WPI_TalonSRX(DriveConstants.CAN.kMotorLeftB)
     ),
-    /* Right */
-    new DriveConfig(
+    new SmartMotorControllerGroup(
       DriveConstants.kInvertRight,
+      DriveConstants.kMultiplier,
       DriveConstants.kAcceleration,
-      new WPI_TalonSRX(DriveConstants.CAN.kMotorPortRightA),
-      new WPI_TalonSRX(DriveConstants.CAN.kMotorPortRightB)
+      (ISmartMotorController) new WPI_TalonSRX(DriveConstants.CAN.kMotorRightA),
+      (ISmartMotorController) new WPI_TalonSRX(DriveConstants.CAN.kMotorRightB)
     )
   );
 
@@ -61,9 +64,8 @@ public class RobotContainer {
    */
   private final DriveCommand m_driveCommand = new DriveCommand(
     m_driveSubsystem,
-    /* Left stick for power (up/down), deviate horizontally for damping */
     m_driverController::getLeftY,
-    m_driverController::getLeftTriggerAxis,
+    m_driverController::getLeftX,
     /* Right stick for steering (left/right), deviate vertically for damping */
     m_driverController::getRightX,
     m_driverController::getRightTriggerAxis
@@ -73,24 +75,33 @@ public class RobotContainer {
    * The subsystem used to pick up game pieces off the ground.
    */
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem(
-    Constants.IntakeConstants.PWM.kMotorPort,
-    Constants.IntakeConstants.kIntakeSpeed,
-    Constants.IntakeConstants.kIsInverted
+    new SmartMotorController(
+      IntakeConstants.kIntakeInverted,
+      IntakeConstants.kIntakeSpeed,
+      0, 0,
+      new Spark(IntakeConstants.PWM.kIntake)
+    )
   );
 
   /**
    * The subsystem used to score game pieces in the baskets.
    */
   private final LaunchSubsystem m_launchSubsystem = new LaunchSubsystem(
-    Constants.LaunchConstants.PWM.kFlywheelPort,
-    Constants.LaunchConstants.kFlywheelSpeed,
-    Constants.LaunchConstants.kFlywheelInverted
+    new SmartMotorController(
+      LaunchConstants.kFlywheelInverted,
+      LaunchConstants.kFlywheelSpeed,
+      0, 0,
+      new Spark(LaunchConstants.PWM.kFlywheel)
+    )
   );
 
   /**
    * The subsystem used to control compressed-air flow.
    */
-  private final PneumaticsSubsystem m_pneumaticsSubsystem = new PneumaticsSubsystem();
+  private final PneumaticsSubsystem m_pneumaticsSubsystem = new PneumaticsSubsystem(
+    PneumaticsConstants.CAN.kPCM,
+    PneumaticsConstants.kPcmType
+  );
 
   /**
    * Configure default commands and button bindings.
@@ -102,7 +113,7 @@ public class RobotContainer {
   }
 
   /**
-   * Bind commands to HID events.
+   * Bind commands to controller events.
    */
   private void configureBindings() {
     m_driverController.a()
@@ -111,18 +122,18 @@ public class RobotContainer {
       .onTrue(m_pneumaticsSubsystem.intakeClose());
 
     m_driverController.povUp()
-      .onTrue(m_intakeSubsystem.intake());
+      .onTrue(m_intakeSubsystem.intakeIn());
     m_driverController.povDown()
-      .onTrue(m_intakeSubsystem.outtake());
+      .onTrue(m_intakeSubsystem.intakeOut());
     m_driverController.povLeft()
-      .onTrue(m_intakeSubsystem.stop());
+      .onTrue(m_intakeSubsystem.intakeStop());
     m_driverController.povRight()
-      .onTrue(m_intakeSubsystem.stop());
+      .onTrue(m_intakeSubsystem.intakeStop());
 
     m_driverController.x()
-      .onTrue(m_launchSubsystem.enable());
+      .onTrue(m_launchSubsystem.flywheelOn());
     m_driverController.y()
-      .onTrue(m_launchSubsystem.disable());
+      .onTrue(m_launchSubsystem.flywheelOff());
 
     m_driverController.leftBumper()
       .onTrue(m_pneumaticsSubsystem.climbOpen());
@@ -131,7 +142,7 @@ public class RobotContainer {
   }
 
   /**
-   * Factory for dummy auto command, which just prints a message, to satisfy the API.
+   * Generate dummy auto command, which just prints a message to satisfy the API.
    * 
    * @return The auto command.
    */

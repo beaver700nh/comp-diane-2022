@@ -1,30 +1,50 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import frc.robot.classes.SmartMotorController;
+
+/**
+ * Handles the robot's intake motor.
+ */
 public class IntakeSubsystem extends SubsystemBase {
-  private final Spark m_motorController;
-  private final double m_motorSpeed;
+  /**
+   * The intake motor controller.
+   */
+  private final SmartMotorController m_intake;
 
   /**
-   * @param channel The RIO PWM channel of the motor controller.
+   * Initialize the intake motor.
    */
-  public IntakeSubsystem(int channel, double speed, boolean invert) {
-    m_motorController = new Spark(channel);
-    m_motorSpeed = invert ? 0 - speed : speed;
+  public IntakeSubsystem(SmartMotorController intake) {
+    m_intake = intake;
   }
 
-  public Command intake() {
-    return runOnce(() -> m_motorController.set(m_motorSpeed));
+  /**
+   * Generate a command to run the intake motor.
+   *
+   * @return The command.
+   */
+  public Command intakeIn() {
+    return runOnce(() -> m_intake.set(1.0));
   }
 
-  public Command outtake() {
-    return runOnce(() -> m_motorController.set(-m_motorSpeed));
+  /**
+   * Generate a command to run the intake motor in reverse.
+   *
+   * @return The command.
+   */
+  public Command intakeOut() {
+    return runOnce(() -> m_intake.set(-1.0));
   }
 
-  public Command stop() {
-    return runOnce(() -> m_motorController.set(0));
+  /**
+   * Generate a command to stop the intake motor.
+   *
+   * @return The command.
+   */
+  public Command intakeStop() {
+    return runOnce(() -> m_intake.set(0.0));
   }
 }

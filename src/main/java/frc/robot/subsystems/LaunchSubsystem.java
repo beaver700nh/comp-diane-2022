@@ -1,26 +1,41 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import frc.robot.classes.SmartMotorController;
+
+/**
+ * Handles the robot's launch flywheel and feeder motor.
+ */
 public class LaunchSubsystem extends SubsystemBase {
-  private final Spark m_flywheelController;
-  private final double m_flywheelSpeed;
+  /**
+   * The flywheel motor controller.
+   */
+  private final SmartMotorController m_flywheel;
 
   /**
-   * @param channel The RIO PWM channel of the motor controller.
+   * Initialize the motors.
    */
-  public LaunchSubsystem(int flywheelChannel, double flywheelSpeed, boolean flywheelInvert) {
-    m_flywheelController = new Spark(flywheelChannel);
-    m_flywheelSpeed = flywheelInvert ? 0 - flywheelSpeed : flywheelSpeed;
+  public LaunchSubsystem(SmartMotorController flywheel) {
+    m_flywheel = flywheel;
   }
 
-  public Command enable() {
-    return runOnce(() -> m_flywheelController.set(m_flywheelSpeed));
+  /**
+   * Generate a command to enable the flywheel motor.
+   *
+   * @return The command.
+   */
+  public Command flywheelOn() {
+    return runOnce(() -> m_flywheel.set(1.0));
   }
 
-  public Command disable() {
-    return runOnce(() -> m_flywheelController.set(0));
+  /**
+   * Generate a command to disable the flywheel motor.
+   *
+   * @return The command.
+   */
+  public Command flywheelOff() {
+    return runOnce(() -> m_flywheel.set(0.0));
   }
 }

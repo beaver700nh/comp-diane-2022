@@ -2,13 +2,13 @@ package frc.robot.commands;
 
 import java.util.function.Supplier;
 
+import edu.wpi.first.wpilibj2.command.Command;
+
 import frc.robot.Constants.*;
 import frc.robot.subsystems.DriveSubsystem;
 
-import edu.wpi.first.wpilibj2.command.Command;
-
 /**
- * This command takes inputs from the controller and drives the drive subsystem accordingly.
+ * Handles controller inputs and drives the drive subsystem accordingly.
  */
 public class DriveCommand extends Command {
   /**
@@ -27,7 +27,7 @@ public class DriveCommand extends Command {
   private final Supplier<Double> m_inputR, m_inputQ;
 
   /**
-   * Connects to a drive subsystem with drive and damping inputs.
+   * Connect to a drive subsystem with drive and damping inputs.
    *
    * @param drive The drive subsystem to control.
    * @param inputX The power input.
@@ -50,7 +50,7 @@ public class DriveCommand extends Command {
   }
 
   /**
-   * Connects to a drive subsystem with drive inputs and no damping.
+   * Connect to a drive subsystem with drive inputs and no damping.
    *
    * @param drive The drive subsystem to control.
    * @param inputX The power input.
@@ -68,7 +68,7 @@ public class DriveCommand extends Command {
   }
 
   /**
-   * Halts motors when the command is started.
+   * Halt motors when the command is started.
    */
   @Override
   public void initialize() {
@@ -76,7 +76,7 @@ public class DriveCommand extends Command {
   }
 
   /**
-   * Drives the drive subsystem according to the inputs, every tick.
+   * Drive the drive subsystem according to the inputs, every tick.
    */
   @Override
   public void execute() {
@@ -84,27 +84,27 @@ public class DriveCommand extends Command {
   }
 
   /**
-   * Applies damping to the power input.
+   * Apply damping to the power input.
    *
    * @return The damped power value.
    */
   private double dampedX() {
-    final double damping = (DriveConstants.kMinPower - 1) * m_inputP.get() + 1;
-    return m_inputX.get() * damping;
+    final double damping = (1 - DriveConstants.kMinPower) * (1 - m_inputP.get());
+    return m_inputX.get() * damping + DriveConstants.kMinPower;
   }
 
   /**
-   * Applies damping to the steer input.
+   * Apply damping to the steer input.
    *
    * @return The damped steer value.
    */
   private double dampedR() {
-    final double damping = (DriveConstants.kMinSteer - 1) * m_inputQ.get() + 1;
-    return m_inputR.get() * damping;
+    final double damping = (1 - DriveConstants.kMinSteer) * (1 - m_inputQ.get());
+    return m_inputR.get() * damping + DriveConstants.kMinSteer;
   }
 
   /**
-   * Halts the motor when the command is stopped.
+   * Halt the motor when the command is stopped.
    */
   @Override
   @SuppressWarnings("PMD.UnusedFormalParameter")
@@ -113,7 +113,7 @@ public class DriveCommand extends Command {
   }
 
   /**
-   * Reports that the command is never finished because the robot should always be drivable when enabled.
+   * Report that the command is never finished because the robot should always be drivable when enabled.
    */
   @Override
   public boolean isFinished() {
