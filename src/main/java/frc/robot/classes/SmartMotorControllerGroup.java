@@ -1,11 +1,13 @@
 package frc.robot.classes;
 
-import frc.robot.interfaces.ISmartMotorController;
+import edu.wpi.first.wpilibj.motorcontrol.MotorController;
+
+import com.ctre.phoenix.motorcontrol.IMotorController;
 
 /**
  * Handles one side of a tank drive drive train.
  */
-public class SmartMotorControllerGroup {
+public class SmartMotorControllerGroup<T extends MotorController & IMotorController> {
   /**
    * The master motor controller which is followed by the others.
    */
@@ -20,11 +22,11 @@ public class SmartMotorControllerGroup {
    * @param multiplier The master speed multiplier of the motors.
    * @param controllers The motor controllers.
    */
-  public SmartMotorControllerGroup(boolean invert, double multiplier, double accelUp, double accelDown, ISmartMotorController... controllers) {
-    ISmartMotorController master = controllers[0];
+  public SmartMotorControllerGroup(boolean invert, double multiplier, double accelUp, double accelDown, T... controllers) {
+    T master = controllers[0];
     m_controller = new SmartMotorController(invert, multiplier, accelUp, accelDown, master);
 
-    for (ISmartMotorController controller : controllers) {
+    for (T controller : controllers) {
       if (controller != master) {
         controller.setInverted(invert);
         controller.follow(master);
@@ -41,7 +43,7 @@ public class SmartMotorControllerGroup {
    * @param multiplier The master speed multiplier of the motors.
    * @param controller The motor controllers.
    */
-  public SmartMotorControllerGroup(boolean invert, double multiplier, double accel, ISmartMotorController... controllers) {
+  public SmartMotorControllerGroup(boolean invert, double multiplier, double accel, T... controllers) {
     this(invert, multiplier, accel, accel, controllers);
   }
 

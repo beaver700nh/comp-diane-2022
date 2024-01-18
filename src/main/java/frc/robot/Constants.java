@@ -16,6 +16,7 @@ public final class Constants {
   public static class DriveConstants {
     public static final boolean kInvertLeft = true;
     public static final boolean kInvertRight = false;
+    public static final double kSteerCorrection = -1.0;
     public static final double kMultiplier = 1.0;
     public static final double kAcceleration = 0.6;
     public static final double kMinPower = 0.4;

@@ -19,7 +19,6 @@ import frc.robot.subsystems.LaunchSubsystem;
 import frc.robot.subsystems.PneumaticsSubsystem;
 import frc.robot.classes.SmartMotorController;
 import frc.robot.classes.SmartMotorControllerGroup;
-import frc.robot.interfaces.ISmartMotorController;
 
 /*
  * TODO:
@@ -43,19 +42,19 @@ public class RobotContainer {
    * The subsystem used to make the robot move around.
    */
   private final DriveSubsystem m_driveSubsystem = new DriveSubsystem(
-    new SmartMotorControllerGroup(
+    new SmartMotorControllerGroup<>(
       DriveConstants.kInvertLeft,
       DriveConstants.kMultiplier,
       DriveConstants.kAcceleration,
-      (ISmartMotorController) new WPI_TalonSRX(DriveConstants.CAN.kMotorLeftA),
-      (ISmartMotorController) new WPI_TalonSRX(DriveConstants.CAN.kMotorLeftB)
+      new WPI_TalonSRX(DriveConstants.CAN.kMotorLeftA),
+      new WPI_TalonSRX(DriveConstants.CAN.kMotorLeftB)
     ),
-    new SmartMotorControllerGroup(
+    new SmartMotorControllerGroup<>(
       DriveConstants.kInvertRight,
       DriveConstants.kMultiplier,
       DriveConstants.kAcceleration,
-      (ISmartMotorController) new WPI_TalonSRX(DriveConstants.CAN.kMotorRightA),
-      (ISmartMotorController) new WPI_TalonSRX(DriveConstants.CAN.kMotorRightB)
+      new WPI_TalonSRX(DriveConstants.CAN.kMotorRightA),
+      new WPI_TalonSRX(DriveConstants.CAN.kMotorRightB)
     )
   );
 
