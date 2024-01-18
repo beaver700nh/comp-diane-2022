@@ -89,8 +89,8 @@ public class DriveCommand extends Command {
    * @return The damped power value.
    */
   private double dampedX() {
-    final double damping = m_inputP.get() * (DriveConstants.kMinPower - 1) + 1;
-    return m_inputX.get() * damping;
+    final double damping = (1 - DriveConstants.kMinPower) * (1 - m_inputP.get());
+    return m_inputX.get() * damping + DriveConstants.kMinPower;
   }
 
   /**
@@ -99,8 +99,8 @@ public class DriveCommand extends Command {
    * @return The damped steer value.
    */
   private double dampedR() {
-    final double damping = m_inputQ.get() * (DriveConstants.kMinSteer - 1) + 1;
-    return m_inputR.get() * damping;
+    final double damping = (1 - DriveConstants.kMinSteer) * (1 - m_inputQ.get());
+    return m_inputR.get() * damping + DriveConstants.kMinSteer;
   }
 
   /**

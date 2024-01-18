@@ -64,7 +64,8 @@ public class RobotContainer {
   private final DriveCommand m_driveCommand = new DriveCommand(
     m_driveSubsystem,
     m_driverController::getLeftY,
-    m_driverController::getLeftTriggerAxis,
+    m_driverController::getLeftX,
+    /* Right stick for steering (left/right), deviate vertically for damping */
     m_driverController::getRightX,
     m_driverController::getRightTriggerAxis
   );
