@@ -4,10 +4,12 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 
 import com.ctre.phoenix.motorcontrol.IMotorController;
 
+import com.revrobotics.CANSparkBase;
+
 /**
  * Handles one side of a tank drive drive train.
  */
-public class SmartMotorControllerGroup<T extends MotorController & IMotorController> {
+public class SmartMotorControllerGroup<T extends MotorController> {
   /**
    * The master motor controller which is followed by the others.
    */
@@ -29,7 +31,11 @@ public class SmartMotorControllerGroup<T extends MotorController & IMotorControl
     for (T controller : controllers) {
       if (controller != master) {
         controller.setInverted(invert);
-        controller.follow(master);
+
+        if (controller instanceof IMotorController)
+          ((IMotorController) controller).follow((IMotorController) master);
+        else if (controller instanceof CANSparkBase)
+          ((CANSparkBase) controller).follow((CANSparkBase) master);
       }
     }
   }

@@ -11,8 +11,12 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+
 import frc.robot.Constants.*;
 import frc.robot.commands.DriveCommand;
+import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LaunchSubsystem;
@@ -101,6 +105,17 @@ public class RobotContainer {
   );
 
   /**
+   * The subsystem used to score endgame points on the bars.
+   */
+  private final ClimbSubsystem m_climbSubsystem = new ClimbSubsystem(
+    new SmartMotorControllerGroup<>(
+      false, 0.5, 0,
+      new CANSparkMax(12, MotorType.kBrushless),
+      new CANSparkMax(13, MotorType.kBrushless)
+    )
+  );
+
+  /**
    * The subsystem used to control compressed-air flow.
    */
   private final PneumaticsSubsystem m_pneumaticsSubsystem = new PneumaticsSubsystem(
@@ -144,6 +159,13 @@ public class RobotContainer {
       .onTrue(m_pneumaticsSubsystem.climbOpen());
     m_driverController.rightBumper()
       .onTrue(m_pneumaticsSubsystem.climbClose());
+
+    m_driverController.start()
+      .onTrue(m_climbSubsystem.test1())
+      .onFalse(m_climbSubsystem.test0());
+    m_driverController.back()
+      .onTrue(m_climbSubsystem.test2())
+      .onFalse(m_climbSubsystem.test0());
   }
 
   /**

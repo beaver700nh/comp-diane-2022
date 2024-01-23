@@ -1,0 +1,44 @@
+package frc.robot.subsystems;
+
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import com.revrobotics.CANSparkMax;
+
+import frc.robot.classes.SmartMotorControllerGroup;
+
+/**
+ * Handles the robot's launch flywheel and feeder motor.
+ */
+public class ClimbSubsystem extends SubsystemBase {
+  /**
+   * The pair of motor controllers.
+   */
+  private final SmartMotorControllerGroup<CANSparkMax> m_controllers;
+
+  /**
+   * Initialize the motors.
+   */
+  public ClimbSubsystem(SmartMotorControllerGroup<CANSparkMax> controllers) {
+    m_controllers = controllers;
+  }
+
+  /**
+   * Set the climber velocity immediately to a value.
+   */
+  public void set(double velocity) {
+    m_controllers.forceTo(velocity);
+  }
+
+  public Command test0() {
+    return runOnce(() -> m_controllers.forceTo(0));
+  }
+
+  public Command test1() {
+    return runOnce(() -> m_controllers.forceTo(1));
+  }
+
+  public Command test2() {
+    return runOnce(() -> m_controllers.forceTo(-1));
+  }
+}
