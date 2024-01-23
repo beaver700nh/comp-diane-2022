@@ -89,8 +89,14 @@ public class RobotContainer {
     new SmartMotorController(
       LaunchConstants.kFlywheelInverted,
       LaunchConstants.kFlywheelSpeed,
-      0, 0,
+      LaunchConstants.kFlywheelAcceleration,
       new Spark(LaunchConstants.PWM.kFlywheel)
+    ),
+    new SmartMotorController(
+      LaunchConstants.kFeederInverted,
+      LaunchConstants.kFeederSpeed,
+      LaunchConstants.kFeederAcceleration,
+      new WPI_TalonSRX(LaunchConstants.CAN.kFeeder)
     )
   );
 
@@ -130,9 +136,9 @@ public class RobotContainer {
       .onTrue(m_intakeSubsystem.intakeStop());
 
     m_driverController.x()
-      .onTrue(m_launchSubsystem.flywheelOn());
+      .onTrue(m_launchSubsystem.feederToggle());
     m_driverController.y()
-      .onTrue(m_launchSubsystem.flywheelOff());
+      .onTrue(m_launchSubsystem.flywheelToggle());
 
     m_driverController.leftBumper()
       .onTrue(m_pneumaticsSubsystem.climbOpen());

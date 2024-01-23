@@ -94,6 +94,13 @@ public class SmartMotorController {
     m_controller.set(velocity * m_multiplier);
   }
 
+  /**
+   * Toggle the motor between on and off.
+   */
+  public void toggle() {
+    m_controller.set(m_controller.get() == 0.0 ? 1.0 : 0.0);
+  }
+
   public MotorController getController() {
     return m_controller;
   }

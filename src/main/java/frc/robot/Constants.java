@@ -42,9 +42,18 @@ public final class Constants {
   public static class LaunchConstants {
     public static final boolean kFlywheelInverted = true;
     public static final double kFlywheelSpeed = 0.75;
+    public static final double kFlywheelAcceleration = 0.0; // unused
+
+    public static final boolean kFeederInverted = true;
+    public static final double kFeederSpeed = 0.75;
+    public static final double kFeederAcceleration = 0.0; // unused
 
     public static class PWM {
       public static final int kFlywheel = 0;
+    }
+
+    public static class CAN {
+      public static final int kFeeder = 9;
     }
   }
 
@@ -60,6 +69,5 @@ public final class Constants {
 /*
  * Other CAN IDs:
  * ==============
- * 9: launch feeder (probably)
  * 10: PDP
  */
