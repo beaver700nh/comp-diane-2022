@@ -30,15 +30,15 @@ public class ClimbSubsystem extends SubsystemBase {
     m_controllers.forceTo(velocity);
   }
 
-  public Command test0() {
+  public Command climberStop() {
     return runOnce(() -> m_controllers.forceTo(0));
   }
 
-  public Command test1() {
+  public Command climberUp() {
     return runOnce(() -> m_controllers.forceTo(1));
   }
 
-  public Command test2() {
+  public Command climberDown() {
     return runOnce(() -> m_controllers.forceTo(-1));
   }
 }
