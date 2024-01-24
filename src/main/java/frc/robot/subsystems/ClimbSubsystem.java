@@ -34,11 +34,11 @@ public class ClimbSubsystem extends SubsystemBase {
     return runOnce(() -> m_controllers.forceTo(0));
   }
 
-  public Command climberUp() {
+  public Command climberExtend() {
     return runOnce(() -> m_controllers.forceTo(1));
   }
 
-  public Command climberDown() {
+  public Command climberRetract() {
     return runOnce(() -> m_controllers.forceTo(-1));
   }
 }

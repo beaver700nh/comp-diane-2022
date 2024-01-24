@@ -161,11 +161,11 @@ public class RobotContainer {
       .onTrue(m_pneumaticsSubsystem.climbClose());
 
     m_driverController.start()
-      .onTrue(m_climbSubsystem.test1())
-      .onFalse(m_climbSubsystem.test0());
+      .onTrue(m_climbSubsystem.climberExtend())
+      .onFalse(m_climbSubsystem.climberStop());
     m_driverController.back()
-      .onTrue(m_climbSubsystem.test2())
-      .onFalse(m_climbSubsystem.test0());
+      .onTrue(m_climbSubsystem.climberRetract())
+      .onFalse(m_climbSubsystem.climberStop());
   }
 
   /**
