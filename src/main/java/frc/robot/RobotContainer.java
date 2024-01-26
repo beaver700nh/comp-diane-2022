@@ -14,6 +14,9 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import frc.robot.lib.SmartMotorController.SmartMotorController;
+import frc.robot.lib.SmartMotorController.SmartMotorControllerGroup;
+
 import frc.robot.Constants.*;
 import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.ClimbSubsystem;
@@ -21,8 +24,6 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LaunchSubsystem;
 import frc.robot.subsystems.PneumaticsSubsystem;
-import frc.robot.classes.SmartMotorController;
-import frc.robot.classes.SmartMotorControllerGroup;
 
 /*
  * TODO:

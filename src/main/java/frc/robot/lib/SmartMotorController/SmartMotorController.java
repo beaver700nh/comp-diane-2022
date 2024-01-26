@@ -1,4 +1,4 @@
-package frc.robot.classes;
+package frc.robot.lib.SmartMotorController;
 
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 

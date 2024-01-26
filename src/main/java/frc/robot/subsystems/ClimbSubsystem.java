@@ -3,9 +3,9 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import com.revrobotics.CANSparkMax;
+import frc.robot.lib.SmartMotorController.SmartMotorControllerGroup;
 
-import frc.robot.classes.SmartMotorControllerGroup;
+import com.revrobotics.CANSparkMax;
 
 /**
  * Handles the robot's launch flywheel and feeder motor.

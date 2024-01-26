@@ -3,7 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import frc.robot.classes.SmartMotorController;
+import frc.robot.lib.SmartMotorController.SmartMotorController;
 
 /**
  * Handles the robot's launch flywheel and feeder motor.
