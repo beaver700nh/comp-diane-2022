@@ -51,6 +51,7 @@ public class RobotContainer {
       DriveConstants.kInvertLeft,
       DriveConstants.kMultiplier,
       DriveConstants.kAcceleration,
+      (master, follower) -> follower.follow(master),
       new WPI_TalonSRX(DriveConstants.CAN.kMotorLeftA),
       new WPI_TalonSRX(DriveConstants.CAN.kMotorLeftB)
     ),
@@ -58,6 +59,7 @@ public class RobotContainer {
       DriveConstants.kInvertRight,
       DriveConstants.kMultiplier,
       DriveConstants.kAcceleration,
+      (master, follower) -> follower.follow(master),
       new WPI_TalonSRX(DriveConstants.CAN.kMotorRightA),
       new WPI_TalonSRX(DriveConstants.CAN.kMotorRightB)
     )
@@ -111,6 +113,7 @@ public class RobotContainer {
   private final ClimbSubsystem m_climbSubsystem = new ClimbSubsystem(
     new SmartMotorControllerGroup<>(
       false, 0.5, 0,
+      (master, follower) -> follower.follow(master),
       new CANSparkMax(12, MotorType.kBrushless),
       new CANSparkMax(13, MotorType.kBrushless)
     )
