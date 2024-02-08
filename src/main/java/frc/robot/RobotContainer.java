@@ -112,10 +112,12 @@ public class RobotContainer {
    */
   private final ClimbSubsystem m_climbSubsystem = new ClimbSubsystem(
     new SmartMotorControllerGroup<>(
-      false, 0.5, 0,
+      ClimbConstants.kClimbInverted,
+      ClimbConstants.kClimbSpeed,
+      ClimbConstants.kClimbAcceleration,
       (master, follower) -> follower.follow(master),
-      new CANSparkMax(12, MotorType.kBrushless),
-      new CANSparkMax(13, MotorType.kBrushless)
+      new CANSparkMax(ClimbConstants.CAN.kClimbA, MotorType.kBrushless),
+      new CANSparkMax(ClimbConstants.CAN.kClimbB, MotorType.kBrushless)
     )
   );
 

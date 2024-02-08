@@ -57,6 +57,17 @@ public final class Constants {
     }
   }
 
+  public static class ClimbConstants {
+    public static final boolean kClimbInverted = false;
+    public static final double kClimbSpeed = 0.5;
+    public static final double kClimbAcceleration = 0.0; // unused
+
+    public static class CAN {
+      public static final int kClimbA = 12;
+      public static final int kClimbB = 13;
+    }
+  }
+
   public static class PneumaticsConstants {
     public static final PneumaticsModuleType kPcmType = PneumaticsModuleType.CTREPCM;
     public static class CAN {
