@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import java.util.function.Supplier;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.robot.Constants.*;
@@ -41,10 +42,10 @@ public class DriveCommand extends Command {
     Supplier<Double> inputR, Supplier<Double> inputQ
   ) {
     m_drive = drive;
-    m_inputX = inputX;
-    m_inputP = inputP;
-    m_inputR = inputR;
-    m_inputQ = inputQ;
+    m_inputX = () -> MathUtil.applyDeadband(inputX.get(), OperatorConstants.kDeadband);
+    m_inputP = () -> MathUtil.applyDeadband(inputP.get(), OperatorConstants.kDeadband);
+    m_inputR = () -> MathUtil.applyDeadband(inputR.get(), OperatorConstants.kDeadband);
+    m_inputQ = () -> MathUtil.applyDeadband(inputQ.get(), OperatorConstants.kDeadband);
 
     addRequirements(drive);
   }

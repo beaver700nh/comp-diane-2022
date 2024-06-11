@@ -1,5 +1,7 @@
 package frc.robot;
 
+import java.util.function.UnaryOperator;
+
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
 /**
@@ -8,15 +10,18 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
  */
 public final class Constants {
   public static class OperatorConstants {
+    public static final double kDeadband = 0.08;
+
     public static class USB {
       public static final int kDriverControllerPort = 0;
     }
   }
 
   public static class DriveConstants {
-    public static final boolean kInvertLeft = true;
-    public static final boolean kInvertRight = false;
-    public static final double kSteerCorrection = -1.0;
+    public static final boolean kInvertLeft = false;
+    public static final boolean kInvertRight = true;
+    public static final UnaryOperator<Double> kGainLeft = (x) -> 1.3 * Math.copySign(x*x, x);
+    public static final UnaryOperator<Double> kGainRight = (x) -> x;
     public static final double kMultiplier = 1.0;
     public static final double kAcceleration = 0.6;
     public static final double kMinPower = 0.4;

@@ -36,9 +36,8 @@ public class DriveSubsystem extends SubsystemBase {
    * @param r The requested turning rate.
    */
   public void forceTo(double x, double r) {
-    r = correctSteering(r);
-    m_trainL.forceTo(x - r);
-    m_trainR.forceTo(x + r);
+    m_trainL.forceTo(DriveConstants.kGainLeft.apply(x + r));
+    m_trainR.forceTo(DriveConstants.kGainRight.apply(x - r));
   }
 
   /**
@@ -48,18 +47,18 @@ public class DriveSubsystem extends SubsystemBase {
    * @param r The requested turning rate.
    */
   public void accelTo(double x, double r) {
-    r = correctSteering(r);
-    m_trainL.accelTo(x - r);
-    m_trainR.accelTo(x + r);
+    m_trainL.accelTo(DriveConstants.kGainLeft.apply(x + r));
+    m_trainR.accelTo(DriveConstants.kGainRight.apply(x - r));
   }
 
   /**
-   * Correct r-value for motor bias.
-   *
-   * @param r The original value.
-   * @return The corrected value.
+   * Request the robot to drive tank-style.
+   * 
+   * @param l The requested speed of the left drivetrain).
+   * @param r The requested speed of the right drivetrain).
    */
-  private double correctSteering(double r) {
-    return r + Math.abs(r) * DriveConstants.kSteerCorrection;
+  public void tankDrive(double l, double r) {
+    m_trainL.accelTo(l);
+    m_trainR.accelTo(r);
   }
 }

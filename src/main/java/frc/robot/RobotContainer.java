@@ -25,12 +25,6 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LaunchSubsystem;
 import frc.robot.subsystems.PneumaticsSubsystem;
 
-/*
- * TODO:
- * - add climbing
- * - add intake feeder
- */
-
 /**
  * Handles the majority of the high-level robot control.
  * This is where commands, subsystems, controllers, and button bindings are located.
@@ -70,11 +64,10 @@ public class RobotContainer {
    */
   private final DriveCommand m_driveCommand = new DriveCommand(
     m_driveSubsystem,
-    m_driverController::getLeftY,
-    m_driverController::getLeftX,
-    /* Right stick for steering (left/right), deviate vertically for damping */
-    m_driverController::getRightX,
-    m_driverController::getRightTriggerAxis
+    () -> -m_driverController.getLeftY(),
+    () -> m_driverController.getLeftTriggerAxis(),
+    () -> m_driverController.getRightX(),
+    () -> m_driverController.getRightTriggerAxis()
   );
 
   /**
